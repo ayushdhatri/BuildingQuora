@@ -1,11 +1,7 @@
 spring:
   application:
-    name=QuoraApp
+    name: QuoraApp
+
   data:
-    host: localhost
-    port: 27017
-    database: QuoraDB
-    auto-index-creation: true
-
-
-
+    mongodb:
+      uri: mongodb://localhost:27017/QuoraDB
