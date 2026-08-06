@@ -7,12 +7,14 @@ import com.example.demo.models.Question;
 import com.example.demo.repositories.QuestionRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
 @Data
 @RequiredArgsConstructor
+@Service
 public class QuestionServiceImpl implements  IQuestionService{
 
     private final QuestionRepository questionRepository;

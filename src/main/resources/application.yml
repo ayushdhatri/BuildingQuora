@@ -1,0 +1,11 @@
+spring:
+  application:
+    name=QuoraApp
+  data:
+    host: localhost
+    port: 27017
+    database: QuoraDB
+    auto-index-creation: true
+
+
+
