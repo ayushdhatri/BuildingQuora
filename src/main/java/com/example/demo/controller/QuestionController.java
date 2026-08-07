@@ -6,10 +6,8 @@ import com.example.demo.dto.QuestionResponseDTO;
 import com.example.demo.services.IQuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -25,4 +23,14 @@ public class QuestionController {
                 .doOnSuccess(response -> System.out.println("Question created Successfully " + response))
                 .doOnError(error -> System.out.println("Error creating question: " + error));
     }
+
+    @GetMapping
+    public Flux<QuestionResponseDTO> getAllQuestions( @RequestParam(required = false) String cursor,
+                                                      @RequestParam(defaultValue = "10") int size)
+    {
+        return questionService.getAllQuestions(cursor, size)
+                .doOnError(error -> System.out.println("Error fetching questions: " + error))
+                .doOnComplete(() -> System.out.println("Questions fetched successfully"));
+    }
+
 }
