@@ -10,9 +10,9 @@ import reactor.core.publisher.Mono;
 public interface ILikeService {
     Mono<LikeResponseDTO> createLike(LikeRequestDTO likeRequestDTO);
 
-    Flux<LikeResponseDTO> countLikesByTargetIdAndTargetType(String targetId, String targetType);
+    Mono<LikeResponseDTO> countLikesByTargetIdAndTargetType(String targetId, String targetType);
 
-    Flux<LikeResponseDTO> countDislikesByTargetIdAndTargetType(String targetId, String targetType);
+    Mono<LikeResponseDTO> countDislikesByTargetIdAndTargetType(String targetId, String targetType);
 
     Mono<LikeResponseDTO> toggleLike(String targetId, String targetType);
 

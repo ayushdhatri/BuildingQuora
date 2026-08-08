@@ -66,4 +66,9 @@ public class QuestionServiceImpl implements  IQuestionService{
         }
         return null;
     }
+
+    @Override
+    public Mono<QuestionResponseDTO> getQuestionById(String id) {
+        return null;
+    }
 }
