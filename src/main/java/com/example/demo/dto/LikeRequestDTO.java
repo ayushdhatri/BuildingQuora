@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class LikeRequestDTO {
+    @NotNull
     @NotBlank(message = "Target Id is required")
     private String targetId;
 
@@ -14,3 +15,5 @@ public class LikeRequestDTO {
     @NotNull
     private Boolean isLike;
 }
+
+

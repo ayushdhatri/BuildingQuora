@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +21,10 @@ public class Like {
     @Id
     private String id;
 
+    @NotBlank(message = "Target Id is required")
     private String targetId;
 
+    @NotBlank(message = "Target type is required")
     private String targetType;// Question, Answer
 
     private Boolean isLike;

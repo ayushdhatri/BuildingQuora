@@ -16,6 +16,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
+import static org.springframework.data.repository.util.ReactiveWrapperConverters.map;
+
 @Data
 @RequiredArgsConstructor
 @Service
@@ -69,6 +71,9 @@ public class QuestionServiceImpl implements  IQuestionService{
 
     @Override
     public Mono<QuestionResponseDTO> getQuestionById(String id) {
-        return null;
+        return questionRepository.findById(id)
+                .map(QuestionAdapter::toQuestionResponseDTO)
+                        .doOnError(error -> System.out.println("Error fetching question: " + error))
+                        .doOnSuccess((response) -> System.out.println("Question fetched successfully" + response) );
     }
 }
