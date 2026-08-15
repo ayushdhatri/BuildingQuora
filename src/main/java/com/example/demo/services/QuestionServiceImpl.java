@@ -3,13 +3,16 @@ package com.example.demo.services;
 import com.example.demo.adapter.QuestionAdapter;
 import com.example.demo.dto.QuestionRequestDTO;
 import com.example.demo.dto.QuestionResponseDTO;
+import com.example.demo.events.ViewCountEvent;
 import com.example.demo.models.Question;
+import com.example.demo.producers.KafkaEventProducer;
 import com.example.demo.repositories.QuestionRepository;
 import com.example.demo.utils.CursorUtils;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.event.KafkaEvent;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,6 +27,7 @@ import static org.springframework.data.repository.util.ReactiveWrapperConverters
 public class QuestionServiceImpl implements  IQuestionService{
 
     private final QuestionRepository questionRepository;
+    private final KafkaEventProducer producer;
 
     @Override
     public Mono<QuestionResponseDTO> createQuestion(QuestionRequestDTO questionRequestDTO) {
@@ -74,6 +78,13 @@ public class QuestionServiceImpl implements  IQuestionService{
         return questionRepository.findById(id)
                 .map(QuestionAdapter::toQuestionResponseDTO)
                         .doOnError(error -> System.out.println("Error fetching question: " + error))
-                        .doOnSuccess((response) -> System.out.println("Question fetched successfully" + response) );
+                        .doOnSuccess((response) -> {
+                            System.out.println("Question fetched successfully" + response);
+                            ViewCountEvent viewCountEvent = ViewCountEvent.builder().targetId(id)
+                                    .targetType("question")
+                                    .createdAt(LocalDateTime.now())
+                                    .build();
+                            producer.publishViewCountEvent(viewCountEvent);
+                        });
     }
 }
