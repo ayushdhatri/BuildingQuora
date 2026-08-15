@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.mongodb.client.model.search.StringSearchFacet;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -27,6 +29,14 @@ public class KafkaConfig {
     private String groupId;
 
     public static final String TOPIC_NAME = "view-count";
+
+    @Bean
+    public NewTopic viewCountTopic(){
+        return TopicBuilder.name(TOPIC_NAME)
+                .partitions(3)
+                .replicas(1)
+                .build();
+    }
 
 
     @Bean ProducerFactory<String, Object> producerFactory(){
@@ -48,7 +58,6 @@ public class KafkaConfig {
         return new DefaultKafkaConsumerFactory<>(configProps);
     }
 
-
     @Bean
     public KafkaTemplate<String, Object> kafkaTemplate(){
         return new KafkaTemplate<>(producerFactory());
@@ -61,6 +70,8 @@ public class KafkaConfig {
         factory.setConcurrency(3);
         return factory;
     }
+
+
 
 }
 

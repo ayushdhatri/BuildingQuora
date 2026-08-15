@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.adapter.QuestionAdapter;
 import com.example.demo.dto.QuestionRequestDTO;
 import com.example.demo.dto.QuestionResponseDTO;
+import com.example.demo.models.Question;
 import com.example.demo.services.IQuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,13 @@ public class QuestionController {
         return questionService.getAllQuestions(cursor, size)
                 .doOnError(error -> System.out.println("Error fetching questions: " + error))
                 .doOnComplete(() -> System.out.println("Questions fetched successfully"));
+    }
+
+    @GetMapping("/{id}")
+    public Mono<QuestionResponseDTO> getQuestionById(@PathVariable String id){
+        return questionService.getQuestionById(id)
+                .doOnError(error -> System.out.println("Error fetching question with id: " + id))
+                .doOnSuccess(response -> System.out.println("Question fetched successfully: " + response));
     }
 
 }

@@ -21,7 +21,6 @@ public class KafkaEventProducer {
                        System.out.println("View Count event published successfully: " + res.getRecordMetadata().toString());
                    }
                 });
-
     }
 
 }
