@@ -65,12 +65,12 @@ public class QuestionServiceImpl implements  IQuestionService{
         }
         else{
             LocalDateTime cursorTimeStamp = CursorUtils.parseCursor(cursor);
-            questionRepository.findByCreatedAtGreaterThanOrderByCreatedAtAsc(cursorTimeStamp, pageable)
+            return questionRepository.findByCreatedAtGreaterThanOrderByCreatedAtAsc(cursorTimeStamp, pageable)
                     .map(QuestionAdapter::toQuestionResponseDTO)
                     .doOnError(error -> System.out.println("Error fetching questions: " + error))
                     .doOnComplete(() -> System.out.println("Questions fetched successfully"));
         }
-        return null;
+
     }
 
     @Override
